@@ -1,116 +1,236 @@
-# NGA 广告隐藏
+<div align="center">
 
-一个**独立运行的 Tampermonkey（油猴）用户脚本**，用于隐藏 NGA 论坛常见的右侧游戏广告、横向通栏广告和部分传统广告位。
+<h1>🛡️ NGA 论坛广告隐藏</h1>
 
-无需安装或启用 NGA-BBS-Script 主脚本，也不依赖 jQuery、第三方 CDN 或 `@require` 资源。
+<p><em>NGA Ad Hider · 让论坛浏览更清爽</em></p>
 
-> 这是非官方社区脚本，与 NGA 论坛及 NGA-BBS-Script 作者无官方关联。脚本仅隐藏页面上的广告元素，不拦截其网络请求。
+<p>
+  <a href="https://github.com/lxwallac/NGA-Ad-Hider-v1.0.0/stargazers"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/lxwallac/NGA-Ad-Hider-v1.0.0?style=social"></a>
+  <a href="https://github.com/lxwallac/NGA-Ad-Hider-v1.0.0/blob/main/CHANGELOG.md"><img alt="Version" src="https://img.shields.io/badge/version-v1.0.0-007ec6"></a>
+  <a href="https://raw.githubusercontent.com/lxwallac/NGA-Ad-Hider-v1.0.0/main/nga-ad-hider.user.js"><img alt="Install with Tampermonkey" src="https://img.shields.io/badge/Tampermonkey-Install-00a651?logo=tampermonkey&logoColor=white"></a>
+  <a href="https://github.com/lxwallac/NGA-Ad-Hider-v1.0.0/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/lxwallac/NGA-Ad-Hider-v1.0.0?label=License&color=brightgreen"></a>
+  <a href="https://github.com/lxwallac/NGA-Ad-Hider-v1.0.0/blob/main/nga-ad-hider.user.js"><img alt="Code size" src="https://img.shields.io/github/languages/code-size/lxwallac/NGA-Ad-Hider-v1.0.0?label=code%20size&color=007ec6"></a>
+</p>
 
-## 功能
+<p>自动隐藏 NGA 右侧广告、横向通栏广告，支持手动点选与规则保存。</p>
 
-| 功能 | 默认 | 说明 |
-| --- | --- | --- |
-| 广告隐藏总开关 | 开启 | 可随时关闭，刷新后设置仍会保留 |
-| 自动隐藏右侧广告 | 开启 | 通过广告标记与页面位置识别右侧竖幅广告 |
-| 自动隐藏横向通栏广告 | 开启 | 根据宽幅广告创意、深色通栏背景或广告标记识别 |
-| 隐藏传统广告位 | 开启 | 部分历史 NGA 广告容器的 CSS 规则 |
-| 加强模式 | 关闭 | 额外处理 `td.null`，**可能误隐藏正常内容** |
-| 点选屏蔽 | 手动操作 | 点击广告保存 CSS 规则，刷新后继续生效 |
-| 清空手动规则 | 手动操作 | 清除点选的全部规则，保留自动识别设置 |
+**[🚀 点击安装油猴脚本](https://raw.githubusercontent.com/lxwallac/NGA-Ad-Hider-v1.0.0/main/nga-ad-hider.user.js)** · **[📖 查看安装教程](#-安装教程第一次使用请看这里)** · **[🐛 问题反馈](https://github.com/lxwallac/NGA-Ad-Hider-v1.0.0/issues)**
 
-脚本使用 `document-start` 注入 CSS，并通过 `MutationObserver` 处理后续插入的广告。实际效果取决于论坛 DOM 结构、广告加载方式与油猴注入时间，无法保证所有广告都能被识别或完全不闪现。
+</div>
 
-## 安装
+---
 
-### 方法一：从 GitHub 安装（发布仓库后推荐）
+## 📖 项目介绍
 
-1. 安装浏览器扩展 [Tampermonkey](https://www.tampermonkey.net/)。
-2. 在此仓库打开 [`nga-ad-hider.user.js`](./nga-ad-hider.user.js)。
-3. 点击 **Raw（原始文件）**，按 Tampermonkey 的提示安装。
-4. 如果浏览器只显示源代码，请在 Tampermonkey 中新建脚本，把源码复制进去，保存并启用。
-5. 打开 [NGA 论坛](https://bbs.nga.cn/)，刷新页面。
+在 NGA 浏览帖子时，右侧游戏广告、横向通栏广告可能会占据阅读空间。
 
-### 方法二：本地安装
+**NGA Ad Hider** 专注于解决这件小事：隐藏部分常见广告位，并提供手动点选功能，让你按自己的习惯决定哪些区域需要显示。
 
-下载 `nga-ad-hider.user.js`，在 Tampermonkey 的实用工具中导入文件；若当前版本不提供文件导入功能，也可以创建新脚本并粘贴完整源码。
+- ✅ **独立运行**：只需要 Tampermonkey，无需安装 NGA-BBS-Script 主脚本。
+- ✅ **无额外 JS 依赖**：不使用 jQuery、远程 `@require` 或第三方 CDN。
+- ✅ **设置持久化**：开关与手动规则保存在油猴中，刷新后继续生效。
+- ✅ **自由控制**：所有功能都可以从油猴菜单中单独开启或关闭。
 
-> **如果你之前安装了「NGA 广告隐藏 v0.2」或「NGA优化摸鱼体验插件-广告隐藏」，先将旧版去广告脚本禁用。** 本脚本独立保存配置，旧插件的手动点选规则不会自动迁移。原来的 NGA-BBS-Script 其他非广告功能可以继续使用。
+> **说明：** 本脚本通过 CSS 和 DOM 操作隐藏页面元素，不是网络层广告拦截器，因此不会阻止广告资源本身的下载，也不能保证覆盖 NGA 的所有广告样式。
 
-## 使用
+## ✨ 功能列表
 
-打开 NGA 网页，点击浏览器右上角的 Tampermonkey 图标。菜单中提供以下功能：
+| 功能 | 默认状态 | 说明 |
+| --- | :---: | --- |
+| 🛡️ 广告隐藏总开关 | ✅ 开启 | 一键启用或关闭全部隐藏规则 |
+| 📌 自动隐藏右侧广告 | ✅ 开启 | 识别常见右侧竖幅广告容器 |
+| 🖼️ 自动隐藏横向通栏广告 | ✅ 开启 | 识别部分宽幅游戏广告与深色广告栏 |
+| 🧹 隐藏传统广告位 | ✅ 开启 | 应用部分历史 NGA 广告位规则 |
+| 🎯 点选未隐藏的广告 | 手动操作 | 点击指定广告，保存对应的 CSS 规则 |
+| 🗑️ 清空手动规则 | 手动操作 | 移除所有手动添加的隐藏规则 |
+| ⚠️ 加强模式 | ⬜ 关闭 | 扩展隐藏范围，可能误隐藏正常内容 |
 
-- `✅/⬜ 广告隐藏总开关`
-- `✅/⬜ 自动隐藏右侧广告`
-- `✅/⬜ 自动隐藏横向通栏广告`
-- `✅/⬜ 隐藏传统广告位`
-- `✅/⬜ 加强模式（可能误隐藏内容）`
-- `🎯 点选未隐藏的广告`
-- `🧹 清空手动规则`
+> 广告结构会随 NGA 更新而变化。自动规则未必覆盖所有页面；遇到漏网广告时，可以尝试「🎯 点选未隐藏的广告」。
 
-点击开关会**立即写入油猴存储并刷新当前页面**，不需要额外点击保存按钮。
+---
 
-### 手动点选广告
+## 🚀 安装教程（第一次使用请看这里）
 
-如果有广告没被自动处理：
+**推荐环境：Chrome 或 Microsoft Edge + Tampermonkey（油猴）。**
 
-1. 打开油猴菜单，点击 `🎯 点选未隐藏的广告`。
-2. 移动鼠标到广告位置，查看橙色高亮框。
-3. **确认高亮框只覆盖要隐藏的广告**，然后点击。
-4. 规则会自动保存。之后刷新页面也会尝试隐藏该区域。
+### 第一步：安装油猴 Tampermonkey
 
-如果高亮框选中了正常内容，按 `Esc` 取消。点选规则通常依赖网页结构，NGA 改版后可能需要重新点选。
+1. 打开 [Tampermonkey 官网](https://www.tampermonkey.net/)。
+2. 选择你正在使用的浏览器（Chrome / Edge）。
+3. 按页面引导安装 Tampermonkey 浏览器扩展。
+4. 安装完成后，建议将 Tampermonkey 固定到浏览器右上角工具栏，方便之后打开菜单。
 
-### 误隐藏了内容怎么办？
+### 第二步：检查浏览器的用户脚本权限
 
-优先关闭「加强模式」。如果是手动点选造成的，点击 `🧹 清空手动规则`。也可以通过油猴菜单关闭总开关进行排查。
+部分新版 Chrome / Edge 需要额外允许油猴执行用户脚本。如果脚本安装成功却完全不运行，请检查：
 
-## 兼容网址
+- **Chrome**：打开 `chrome://extensions`，进入 Tampermonkey 的「详情」，寻找并开启「允许用户脚本」。
+- **Edge**：打开 `edge://extensions`，进入 Tampermonkey 的「详情」，检查是否提供「允许用户脚本」选项。
+- **如果找不到该选项**：可按 [Tampermonkey 官方说明](https://www.tampermonkey.net/faq.php?locale=zh&q=Q209) 检查是否需要开启扩展管理页面的「开发者模式」。
 
-- `https://bbs.nga.cn/`
-- `https://ngabbs.com/`
-- `https://www.ngabbs.com/`
-- `https://nga.178.com/`
-- `https://g.nga.cn/`
+> 不同浏览器和版本的设置入口可能不同，以 Tampermonkey 官方文档为准。
 
-`@match` 同时允许对应站点的 HTTP 页面。基于 Chromium 浏览器（Chrome、Edge 等）和现代 CSS/DOM API 开发。
+### 第三步：安装 NGA Ad Hider
 
-## 给仓库维护者：如何发布与更新
+点击下方链接：
 
-建议仓库名：**`nga-ad-hider`**。把本项目的文件放到仓库根目录即可。
+### 👉 [**点击安装 NGA Ad Hider v1.0.0**](https://raw.githubusercontent.com/lxwallac/NGA-Ad-Hider-v1.0.0/main/nga-ad-hider.user.js)
 
-创建仓库并上传后，安装地址一般是：
+通常会打开 Tampermonkey 的脚本安装页面，确认脚本名称为 **「NGA 广告隐藏」**，然后点击「安装」。
 
-```text
-https://raw.githubusercontent.com/YOUR_USERNAME/nga-ad-hider/main/nga-ad-hider.user.js
-```
+**如果链接只显示 JavaScript 源代码，没有弹出安装页面：**
 
-把 `YOUR_USERNAME` 替换为真实 GitHub 用户名。
+1. 打开 [脚本文件](https://github.com/lxwallac/NGA-Ad-Hider-v1.0.0/blob/main/nga-ad-hider.user.js)，复制完整代码。
+2. 点击浏览器右上角的 Tampermonkey 图标，进入「管理面板」。
+3. 点击 `+` 新建脚本，删除编辑器默认内容。
+4. 粘贴刚才复制的代码，按 `Ctrl + S` 保存。
+5. 确认脚本在管理面板中处于「已启用」状态。
 
-**开启自动更新（可选）**：等仓库创建后，在 `nga-ad-hider.user.js` 的 `// ==UserScript==` 区域，增加并填入实际有效的地址：
+### 第四步：打开 NGA，检查是否生效
 
-```javascript
-// @updateURL    https://raw.githubusercontent.com/YOUR_USERNAME/nga-ad-hider/main/nga-ad-hider.user.js
-// @downloadURL  https://raw.githubusercontent.com/YOUR_USERNAME/nga-ad-hider/main/nga-ad-hider.user.js
-```
+1. 打开 [NGA 论坛](https://bbs.nga.cn/) 或任意帖子页面。
+2. 按 `Ctrl + R` 刷新网页。
+3. 点击油猴图标，确认「NGA 广告隐藏」已在当前站点运行。
+4. 观察右侧广告和横向通栏广告是否被隐藏。
 
-确保将 `YOUR_USERNAME` 替换为你自己的用户名。以后每次发布新版本，需要同步提高 `@version`，并更新 `CHANGELOG.md`。**不要直接发布带有占位符的更新链接。**
+🎉 **安装完成！** 不需要额外安装 NGA-BBS-Script，也无需手动配置任何外部依赖。
 
-## 本地测试
+---
 
-项目无需安装 npm 依赖，使用 Node.js 20+：
+## ⚙️ 如何使用
+
+在 NGA 页面点击 **Tampermonkey 图标 → NGA 广告隐藏**，即可看到相关菜单：
+
+| 菜单 | 用途 |
+| --- | --- |
+| `✅ / ⬜ 广告隐藏总开关` | 总体开启或关闭 |
+| `✅ / ⬜ 自动隐藏右侧广告` | 控制右侧广告 |
+| `✅ / ⬜ 自动隐藏横向通栏广告` | 控制页面横幅广告 |
+| `✅ / ⬜ 隐藏传统广告位` | 控制传统广告选择器 |
+| `✅ / ⬜ 加强模式` | 可选的扩展规则 |
+| `🎯 点选未隐藏的广告` | 手动选中并隐藏广告 |
+| `🧹 清空手动规则` | 删除手动保存的隐藏规则 |
+
+**点击开关后，设置会自动保存并刷新当前页面**，不需要再点击其他「保存」按钮。
+
+### 🎯 漏网广告？手动点选隐藏
+
+如果自动识别没有覆盖某个广告：
+
+1. 在油猴菜单中选择 **「🎯 点选未隐藏的广告」**。
+2. 移动鼠标到广告上，查看橙色高亮框。
+3. **确认高亮范围只覆盖广告**，再点击鼠标。
+4. 该区域会被隐藏，对应规则会保存到油猴存储中。
+
+按 `Esc` 可以随时取消点选。
+
+> 手动规则依赖网页结构。如果 NGA 改版，之前保存的规则可能需要重新设置。
+
+### 🧹 恢复误隐藏的内容
+
+如果正常内容被隐藏，可以先关闭「加强模式」，或者通过菜单中的「🧹 清空手动规则」删除所有手动规则。
+
+需要彻底排查时，可以关闭「广告隐藏总开关」，刷新后查看页面是否恢复正常。
+
+---
+
+## ❓ 常见问题
+
+<details>
+<summary><strong>Q1：脚本安装了，但 NGA 页面没有任何变化？</strong></summary>
+
+先检查 Tampermonkey 是否启用，以及浏览器是否允许用户脚本运行。然后确认访问的是支持的 NGA 域名，并刷新页面。如果仍然没有效果，可以打开 F12 控制台查看是否有与 NGA Ad Hider 相关的报错。
+
+</details>
+
+<details>
+<summary><strong>Q2：为什么还有广告没有隐藏？</strong></summary>
+
+广告可能使用了新的 HTML 结构，或者加载到了不同的容器中。可以使用「🎯 点选未隐藏的广告」，并在 GitHub Issues 提供截图与页面地址，帮助完善自动规则。
+
+</details>
+
+<details>
+<summary><strong>Q3：为什么有时会先看到广告，再突然消失？</strong></summary>
+
+部分广告由 NGA 页面动态加载。脚本虽然会尽早启动，并监听页面变化，但在实际加载顺序下仍可能短暂显示广告。
+
+</details>
+
+<details>
+<summary><strong>Q4：能和 NGA-BBS-Script 一起使用吗？</strong></summary>
+
+可以将两者作为独立脚本安装。不过，如果还安装了旧的「NGA 广告隐藏」测试版或其他同功能去广告插件，建议禁用重复的去广告脚本，以免规则冲突。
+
+</details>
+
+<details>
+<summary><strong>Q5：关闭或重新打开浏览器后，设置会丢失吗？</strong></summary>
+
+正常情况下不会。设置通过 Tampermonkey 的存储接口保存；但删除脚本数据、清空扩展存储或更换浏览器环境可能导致配置丢失。
+
+</details>
+
+<details>
+<summary><strong>Q6：怎样获取新版本？</strong></summary>
+
+可关注本仓库的 [更新日志](./CHANGELOG.md)，在发布新版本后重新打开脚本文件进行更新。当前 v1.0.0 脚本尚未配置 GitHub 的 `@updateURL` / `@downloadURL` 元数据，因此不承诺自动更新。
+
+</details>
+
+---
+
+## 🌐 支持的 NGA 网址
+
+- `bbs.nga.cn`
+- `ngabbs.com`
+- `www.ngabbs.com`
+- `nga.178.com`
+- `g.nga.cn`
+
+> 脚本匹配上述网址的 HTTP/HTTPS 页面，主要面向桌面端 Chrome / Edge 及 Tampermonkey 环境。
+
+## 🧪 开发与测试
+
+本项目不需要安装 npm 依赖。安装 Node.js 20+ 后，可以在项目根目录运行：
 
 ```bash
 node --check nga-ad-hider.user.js
 node tests/ad-hider.test.js
 ```
 
-提供的是模拟 DOM 的单元/回归测试，覆盖右侧广告、横向广告、正常帖子图片保护、开关保存和手动规则。测试通过不等于已在 NGA 线上页面完整验证。
+测试覆盖右侧广告、横向广告、开关保存、手动规则及部分正常内容保护场景。**模拟测试不能代替真实浏览器中的回归测试。**
 
-## 问题反馈
+## 📋 更新日志
 
-请在 GitHub Issues 中提供：NGA 页面网址（可去除敏感参数）、浏览器及 Tampermonkey 版本、广告所在位置的截图、相关控制台错误。如有条件，可以提供广告容器的简化 HTML。不要提交 Cookie、登录凭证或其他敏感信息。
+### v1.0.0
 
-## 许可证
+- 初版独立油猴脚本。
+- 支持右侧竖幅广告、横向通栏广告及传统广告位隐藏。
+- 支持点选屏蔽和自定义规则持久化。
+- 支持独立功能开关，无需 NGA-BBS-Script 主脚本。
 
-[MIT](./LICENSE)。少量传统广告位 CSS 选择器参考了 NGA-BBS-Script 社区的[相关 PR #75](https://github.com/kisshang1993/NGA-BBS-Script/pull/75)。
+完整记录见 [CHANGELOG.md](./CHANGELOG.md)。
+
+## 🐛 问题反馈与建议
+
+遇到漏网广告、误隐藏或浏览器兼容问题，欢迎 [提交 Issue](https://github.com/lxwallac/NGA-Ad-Hider-v1.0.0/issues)。
+
+反馈时建议附上浏览器与油猴版本、NGA 页面地址、截图及必要的控制台错误。请勿公开 Cookie、Token 或其他登录凭证。
+
+## 🙏 致谢
+
+- [NGA-BBS-Script](https://github.com/kisshang1993/NGA-BBS-Script)：NGA 社区脚本项目，传统广告位的部分规则参考了其社区 [PR #75](https://github.com/kisshang1993/NGA-BBS-Script/pull/75)。
+- [Tampermonkey](https://www.tampermonkey.net/)：用户脚本运行环境。
+
+## 📄 开源协议
+
+本项目采用 [MIT License](./LICENSE)。
+
+本项目是非官方社区作品，与 NGA 论坛及上述第三方项目不存在官方关联。
+
+---
+
+**如果这个脚本对你有帮助，欢迎点个 ⭐ Star！**
+
+[返回仓库首页](https://github.com/lxwallac/NGA-Ad-Hider-v1.0.0) · [安装脚本](https://raw.githubusercontent.com/lxwallac/NGA-Ad-Hider-v1.0.0/main/nga-ad-hider.user.js) · [提交反馈](https://github.com/lxwallac/NGA-Ad-Hider-v1.0.0/issues)
