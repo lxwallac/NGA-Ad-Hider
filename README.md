@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1>🛡️ NGA 论坛广告隐藏</h1>
+<h1>🛡️ NGA 论坛广告隐藏插件</h1>
 
 <p><em>NGA Ad Hider · 让论坛浏览更清爽</em></p>
 
